@@ -1,15 +1,19 @@
 import streamlit as st
 from genai_services import answer_with_context
-from chroma_services import query_documents
+from dotenv import load_dotenv
+load_dotenv()
+st.title("Gemini Chatbot")
 
-st.title("RAG QnA Chatbot")
-st.write("Ask questions about your ingested document!")
-user_query = st.chat_input("Your question:")
-if user_query:
-    # Query Chroma for context
-    context_chunks = query_documents(user_query, n_results=3)
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
-    with st.spinner("Generating answer..."):
-        answer = answer_with_context(user_query, context_chunks)
-    st.markdown(f"**Answer:** {answer}")
-    st.expander("Show retrieved context").write("\n".join(context_chunks))
+user_input = st.text_input("You:", key="user_input")
+
+if st.button("Send") and user_input:
+    st.session_state.messages.append({"role": "user", "content": user_input})
+    with st.spinner("Gemini is thinking..."):
+        response = answer_with_context(user_input)
+    st.session_state.messages.append({"role": "assistant", "content": response})
+
+for msg in st.session_state.messages:
+    st.markdown(f"**{msg['role'].capitalize()}:** {msg['content']}")

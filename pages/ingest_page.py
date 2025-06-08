@@ -4,6 +4,8 @@ from genai_services import summarize_text, chunk_text
 from chroma_services import ingest_documents
 import tempfile
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 st.title("Document Ingestion & Summarization")
 uploaded_file = st.file_uploader(

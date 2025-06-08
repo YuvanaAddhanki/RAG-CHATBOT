@@ -1,13 +1,10 @@
 import streamlit as st
+from dotenv import load_dotenv
+load_dotenv()
 
 st.set_page_config(page_title="RAG QnA & Summarization Chatbot", layout="wide")
 
-ingest_page = st.Page("pages/ingest_page.py", title="Ingest")
-chatbot_page = st.Page("pages/chatbot_page.py", title="Chatbot")
+st.title("Welcome to the Gemini RAG Chatbot!")
+st.markdown("Select a page from the sidebar to get started.")
 
-pg = st.navigation([
-    ingest_page,
-    chatbot_page
-])
-
-pg.run()
+# Streamlit will automatically detect and display pages in the 'pages' directory.
